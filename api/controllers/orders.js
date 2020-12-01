@@ -1,7 +1,7 @@
+const mongoose = require('mongoose');
+
 const Order = require('../models/order');
 const Product = require('../models/product');
-const mongoose = require('mongoose');
-const { findOne } = require('../models/order');
 
 exports.orders_get_all = (req, res, next) => {
   Order.find()
@@ -28,7 +28,7 @@ exports.orders_get_all = (req, res, next) => {
     });
 };
 
-exports.orders_createorder = (req, res, next) => {
+exports.orders_create_order = (req, res, next) => {
   Product.findById(req.body.productId)
     .then((product) => {
       if (!product) {
@@ -37,6 +37,7 @@ exports.orders_createorder = (req, res, next) => {
         });
       }
       const order = new Order({
+        _id: mongoose.Types.ObjectId,
         quantity: req.body.quantity,
         product: req.body.productId,
       });
@@ -58,7 +59,7 @@ exports.orders_createorder = (req, res, next) => {
       });
     })
     .catch((err) => {
-      //console.log(err);
+      console.log(err);
       return res.status(500).json({
         error: err,
       });
